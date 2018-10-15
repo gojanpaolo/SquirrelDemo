@@ -9,6 +9,7 @@
     <StackPanel>
         <TextBlock Name="location"/>
         <TextBlock Name="version"/>
+        <TextBlock Name="status"/>
         <TextBox Name="exception" TextWrapping="Wrap"/>
     </StackPanel>
 </Window>

@@ -23,6 +23,10 @@ namespace MyApp
                     {
                         await mgr.Result.UpdateApp();
                     }
+                    Dispatcher.Invoke(() =>
+                    {
+                        status.Text = "Done";
+                    });
                 }
                 catch (Exception e)
                 {
