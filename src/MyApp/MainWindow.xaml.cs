@@ -20,8 +20,9 @@ namespace MyApp
                 try
                 {
                     using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/gojanpaolo/SquirrelDemo"))
+                    using (var result = await mgr)
                     {
-                        await mgr.Result.UpdateApp();
+                        await result.UpdateApp();
                     }
                     Dispatcher.Invoke(() =>
                     {
