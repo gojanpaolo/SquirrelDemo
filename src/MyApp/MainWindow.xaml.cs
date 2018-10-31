@@ -3,7 +3,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
 
 namespace MyApp
 {
@@ -18,22 +17,12 @@ namespace MyApp
 
             Task.Run(async () =>
             {
-                using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/gojanpaolo/SquirrelDemo"))
-                using (var result = await mgr)
-                {
-                    SquirrelAwareApp.HandleEvents(
-                      onInitialInstall: v => RegisterAppToRunOnStartup());
-                }
-            });
-
-            Task.Run(async () =>
-            {
                 try
                 {
-                    using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/gojanpaolo/SquirrelDemo"))
-                    using (var result = await mgr)
+                    using (var taskMgr = AppUpdateManager.GitHubUpdateManager())
+                    using (var mgr = await taskMgr)
                     {
-                        await result.UpdateApp();
+                        await mgr.UpdateApp();
                     }
                 }
                 catch (Exception e)
@@ -44,17 +33,10 @@ namespace MyApp
                     });
                 }
             });
+
             var assembly = Assembly.GetExecutingAssembly();
             location.Text = assembly.Location;
             version.Text = assembly.GetName().Version.ToString(3);
-        }
-
-        private void RegisterAppToRunOnStartup()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            using (var startupRegistryKey = Registry.CurrentUser.OpenSubKey(
-                "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
-                startupRegistryKey.SetValue(assembly.GetName().Name, assembly.Location);
         }
     }
 }

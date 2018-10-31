@@ -1,11 +1,12 @@
 function Get-AssemblyVersion($assemblyInfoPath) {
-    $pattern = '\[assembly: AssemblyVersion\("(.*)"\)\]'
-    (Get-Content $assemblyInfoPath) | ForEach-Object{
-        if($_ -match $pattern) {
-            $assemblyVersionAttribute = [version]$matches[1]
-            return "{0}.{1}.{2}" -f $assemblyVersionAttribute.Major, $assemblyVersionAttribute.Minor, $assemblyVersionAttribute.Build
-        }
+  #TODO enhance algorithm to ignore comments
+  $pattern = '\[assembly: AssemblyVersion\("(.*)"\)\]'
+  (Get-Content $assemblyInfoPath) | ForEach-Object{
+    if($_ -match $pattern) {
+      $assemblyVersionAttribute = [version]$matches[1]
+      return "{0}.{1}.{2}" -f $assemblyVersionAttribute.Major, $assemblyVersionAttribute.Minor, $assemblyVersionAttribute.Build
     }
+  }
 }
 
 $nuget = ".\nuget.exe"
@@ -33,6 +34,6 @@ $assemblyVersion = Get-AssemblyVersion "MyApp\Properties\AssemblyInfo.cs"
 # TODO if squirrel.windows version is updated
 $squirrel = "packages\squirrel.windows.1.9.0\tools\Squirrel.exe"
 
-& $squirrel --releasify "MyApp.$assemblyVersion.nupkg"
+& $squirrel --releasify "MyApp.$assemblyVersion.nupkg" --no-msi
 
 pause
