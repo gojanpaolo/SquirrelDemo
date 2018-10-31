@@ -13,24 +13,20 @@ namespace MyApp
         {
             base.OnStartup(e);
 
-            Task.Run(async () =>
+            using (var mgr = new UpdateManager(default))
             {
-                using (var taskMgr = AppUpdateManager.GitHubUpdateManager())
-                using (var mgr = await taskMgr)
-                {
-                    SquirrelAwareApp.HandleEvents(
-                        onInitialInstall: v => 
-                        {
-                            mgr.CreateShortcutForThisExe();
-                            mgr.CreateRunAtWindowsStartupRegistry();
-                        },
-                        onAppUninstall: v =>
-                        {
-                            mgr.RemoveShortcutForThisExe();
-                            mgr.RemoveRunAtWindowsStartupRegistry();
-                        });
-                }
-            });
+                SquirrelAwareApp.HandleEvents(
+                    onInitialInstall: v =>
+                    {
+                        mgr.CreateShortcutForThisExe();
+                        mgr.CreateRunAtWindowsStartupRegistry();
+                    },
+                    onAppUninstall: v =>
+                    {
+                        mgr.RemoveShortcutForThisExe();
+                        mgr.RemoveRunAtWindowsStartupRegistry();
+                    });
+            }
         }
     }
 }
