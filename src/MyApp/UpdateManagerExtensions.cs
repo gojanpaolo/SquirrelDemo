@@ -6,21 +6,21 @@ namespace MyApp
 {
     public static class UpdateManagerExtensions
     {
-        private static RegistryKey OpenRunAtStartupRegistryKey() =>
+        private static RegistryKey OpenRunAtWindowsStartupRegistryKey() =>
             Registry.CurrentUser.OpenSubKey(
                 "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-        public static void CreateRunAtStartupRegistry(this UpdateManager updateManager)
+        public static void CreateRunAtWindowsStartupRegistry(this UpdateManager updateManager)
         {
-            using (var startupRegistryKey = OpenRunAtStartupRegistryKey())
+            using (var startupRegistryKey = OpenRunAtWindowsStartupRegistryKey())
                 startupRegistryKey.SetValue(
                     updateManager.ApplicationName, 
                     Path.Combine(updateManager.RootAppDirectory, $"{updateManager.ApplicationName}.exe"));
         }
 
-        public static void RemoveRunAtStartupRegistry(this UpdateManager updateManager)
+        public static void RemoveRunAtWindowsStartupRegistry(this UpdateManager updateManager)
         {
-            using (var startupRegistryKey = OpenRunAtStartupRegistryKey())
+            using (var startupRegistryKey = OpenRunAtWindowsStartupRegistryKey())
                 startupRegistryKey.DeleteValue(updateManager.ApplicationName);
         }
     }
