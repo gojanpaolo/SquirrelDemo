@@ -19,8 +19,9 @@ namespace MyApp
             {
                 try
                 {
-                    using (var taskMgr = AppUpdateManager.GitHubUpdateManager())
-                    using (var mgr = await taskMgr)
+                    //using (var taskMgr = AppUpdateManager.GitHubUpdateManager())
+                    //using (var mgr = await taskMgr)
+                    using(var mgr = new UpdateManager(@"https://localhost/Releases"))
                     {
                         await mgr.UpdateApp();
                     }
