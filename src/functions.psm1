@@ -28,5 +28,5 @@ function Start-Build {
 
   $squirrel = ".\packages\squirrel.windows.*\tools\Squirrel.exe"
 
-  & $squirrel --releasify "MyApp.$assemblyVersion.nupkg" --no-msi
+  & $squirrel --releasify "MyApp.$assemblyVersion.nupkg"
 }
