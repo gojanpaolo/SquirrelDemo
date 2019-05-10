@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Bypass %~dp0\bump-patch.ps1

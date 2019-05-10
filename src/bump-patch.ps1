@@ -2,6 +2,5 @@
 
 import-module $PSScriptRoot\functions.psm1 -DisableNameChecking
 
-Start-Build
+Update-VersionPatch
 
-pause
