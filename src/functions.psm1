@@ -30,39 +30,3 @@ function Start-Build {
 
   & $squirrel --releasify "MyApp.$assemblyVersion.nupkg" --no-msi
 }
-
-function Update-VersionPatch {
-  $assemblyVersionPattern = '^\[assembly: AssemblyVersion\("(.*)"\)\]'
-  $assemblyFileVersionPattern = '^\[assembly: AssemblyFileVersion\("(.*)"\)\]'
-  
-  (Get-Content $assemblyInfoCs) | ForEach-Object {
-    if ($_ -match $assemblyVersionPattern) {
-
-      # Bump the PATCH version number
-      # semantic versioning : MAJOR.MINOR.PATCH
-      $currentVersion = [version]$matches[1]
-      $updatedVersion = "{0}.{1}.{2}.{3}" -f $currentVersion.Major, $currentVersion.Minor, ($currentVersion.Build + 1), $currentVersion.Revision
-      
-      # Write updated AssemblyVersion
-      '[assembly: AssemblyVersion("{0}")]' -f $updatedVersion
-    }
-    elseif ($_ -match $assemblyFileVersionPattern) {
-
-      # Bump the PATCH version number
-      # semantic versioning : MAJOR.MINOR.PATCH
-      $currentVersion = [version]$matches[1]
-      $updatedVersion = "{0}.{1}.{2}.{3}" -f $currentVersion.Major, $currentVersion.Minor, ($currentVersion.Build + 1), $currentVersion.Revision
-      
-      # Write updated AssemblyVersion
-      '[assembly: AssemblyFileVersion("{0}")]' -f $updatedVersion
-    }
-    else {
-
-      # Write line as is
-      $_
-    }
-
-    # Write to file
-    # Specify UTF8 encoding to not mess up "©" symbol
-  } | Set-Content $assemblyInfoCs -Encoding UTF8
-}
