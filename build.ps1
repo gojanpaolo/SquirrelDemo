@@ -10,19 +10,16 @@ function Get-AssemblyVersion($assemblyInfoPath) {
   }
 }
 
-function Start-Build {
-  $nuget = ".\nuget.exe"
-  $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-  $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-  $squirrel = ".\packages\squirrel.windows.*\tools\Squirrel.exe"
-  $myAppProject = "MyApp\MyApp.csproj"
-  $assemblyVersion = Get-AssemblyVersion "MyApp\Properties\AssemblyInfo.cs"
+$nuget = ".\nuget.exe"
+$vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+$msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+$squirrel = ".\packages\squirrel.windows.*\tools\Squirrel.exe"
+$myAppProject = "MyApp\MyApp.csproj"
+$assemblyVersion = Get-AssemblyVersion "MyApp\Properties\AssemblyInfo.cs"
 
-  & $nuget restore $myAppProject -SolutionDirectory ".\"
-  & $msbuild $myAppProject /p:Configuration=Release /p:AllowedReferenceRelatedFileExtensions=.pdb
-  & $nuget pack MyApp.nuspec -version $assemblyVersion
-  & $squirrel --releasify "MyApp.$assemblyVersion.nupkg"
-}
+& $nuget restore $myAppProject -SolutionDirectory ".\"
+& $msbuild $myAppProject /p:Configuration=Release /p:AllowedReferenceRelatedFileExtensions=.pdb
+& $nuget pack MyApp.nuspec -version $assemblyVersion
+& $squirrel --releasify "MyApp.$assemblyVersion.nupkg"
 
-Start-Build
 pause
