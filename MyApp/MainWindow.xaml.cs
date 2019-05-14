@@ -1,39 +1,23 @@
 ﻿using Squirrel;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace MyApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
 
-            Task.Run(async () =>
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (var mgr = new UpdateManager(@"C:\git\SquirrelDemo\Releases"))
             {
-                try
-                {
-                    //using (var taskMgr = AppUpdateManager.GitHubUpdateManager())
-                    //using (var mgr = await taskMgr)
-                    using(var mgr = new UpdateManager(@"https://localhost/Releases"))
-                    {
-                        await mgr.UpdateApp();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        exception.Text = e.ToString();
-                    });
-                }
-            });
+                mgr.UpdateApp();
+            }
 
             var assembly = Assembly.GetExecutingAssembly();
             location.Text = assembly.Location;
