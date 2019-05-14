@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <title>MyAppTwo</title>
+    <id>MyAppTwo</id>
+    <version>$version$</version>
+    <authors>Me</authors>
+    <description>MyAppTwo - Squirrel</description>
+  </metadata>
+  <files>
+    <file src="MyApp\bin\Release\*.*" target="lib\net45\" exclude="*.pdb;*.vshost.*"/>
+  </files>
+</package>
