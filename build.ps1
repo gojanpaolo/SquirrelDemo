@@ -17,13 +17,8 @@ $squirrel = ".\packages\squirrel.windows.*\tools\Squirrel.exe"
 $myAppProject = "MyApp\MyApp.csproj"
 $assemblyVersion = Get-AssemblyVersion "MyApp\Properties\AssemblyInfo.cs"
 
-& $nuget restore $myAppProject -SolutionDirectory ".\"
-& $msbuild $myAppProject /p:Configuration=Release /p:AllowedReferenceRelatedFileExtensions=.pdb
 & $nuget pack MyApp.nuspec -version $assemblyVersion
 & $nuget pack MyAppTwo.nuspec -version $assemblyVersion
 & $nuget pack MyDiffApp.nuspec -version $assemblyVersion
-& $squirrel --releasify "MyApp.$assemblyVersion.nupkg"
-& $squirrel --releasify "MyAppTwo.$assemblyVersion.nupkg" -r "ReleasesTwo"
-& $squirrel --releasify "MyDiffApp.$assemblyVersion.nupkg" -r "ReleasesDiff"
 
 pause

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
+    <title>MyApp</title>
     <id>MyApp</id>
     <version>$version$</version>
     <authors>Me</authors>
